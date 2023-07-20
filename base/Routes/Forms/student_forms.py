@@ -2,6 +2,17 @@ from django import forms
 from django.contrib.auth.models import User
 from ... import models
 
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+import os
+
+
+def validate_image_file(value):
+    ext = os.path.splitext(value.name)[1]  # Get the file extension
+    valid_extensions = ['.jpg', '.jpeg', '.png', '.gif']
+    if not ext.lower() in valid_extensions:
+        raise ValidationError(_('Only image files (JPG, JPEG, PNG, GIF) are allowed.'))
+
 
 class StudentUserForm(forms.ModelForm): 
     class Meta:
@@ -21,6 +32,8 @@ class StudentForm(forms.ModelForm):
                                         empty_label='Select department',
                                         to_field_name='short_name',
                                         label='Department')
+    profile_pic = forms.ImageField(validators=[validate_image_file], label='Profile Picture')
+    
 
     class Meta:
         model = models.Student

@@ -73,13 +73,13 @@
             <label for="role_no">Role No: <span style="color: gray;">( readonly )</span></label>
             <input type="text" required name="role_no" value="{{ student.role_no }}" readonly><br>
             <label for="file_">Profile photo: <span style="color: gray;"> ( Remember to select a profile picture. )</span></label>
-            <input type="file" required name="file_"><br>
+            <input type="file" required name="file_" accept="image/*"><br>
             <label for="joinned_year">Department:<span style="color: gray;">( Remember to select a Department. )</span></label>
             <select name="department">
                 {% for i in department %}
                   <option value="{{ i.name }}" {% if i.name == student.department %}selected{% endif %}>{{ i.name }}</option>
                 {% endfor %}
-              </select>
+            </select>
             <input type="submit" value="Save">
         </form>
         <script>

@@ -71,7 +71,7 @@
             <label for="role_no">Roll No: <span style="color: gray;">( readonly )</span></label>
             <input type="text" required name="role_no" value="{{ student.role_no }}" readonly><br>
             <label for="file_">Profile photo: <span style="color: gray;"> ( Remember to select a profile picture. )</span></label>
-            <input type="file" required name="file_"><br>
+            <input type="file" required name="file_" accept="image/*"><br>
             <label for="joinned_year">Department:<span style="color: gray;">( readonly )</span></label>
             <input type="text" required name="department" id="department" value="{{ student.department }}" readonly><br>
             

@@ -308,14 +308,18 @@ teacher = [
     path('admin/chat_lobby', admin_lobby, name='admin_chat_lobby'),
     path('teacher/teacherlogin',
          LoginView.as_view(template_name='login/login.html'), name='teacherlogin'),
+    
+    
     path('teacher/addstudentlogin',
          LoginView.as_view(template_name='student/studentadded.html'), name='addstudentlogin'),
-     path('department/teacher/addstudentlogin',
-         LoginView.as_view(template_name='student/studentadded.html'), name='addstudentlogin'),
+     # path('department/teacher/addstudentlogin',
+     #     LoginView.as_view(template_name='student/studentadded.html'), name='addstudentlogin'),
+     
+     
     path('teacher/addstudentsignup', add_student_signup_view,
          name='add_student_signup_view'),
-    path('department/teacher/addstudentsignup', add_student_signup_view,
-         name='add_student_signup_view'),
+#     path('department/teacher/addstudentsignup', add_student_signup_view,
+#          name='add_student_signup_view'),
     path('teacher/teachersignup', teacher_signup_view, name='teachersignup'),
     path('teacher/user_added_message', user_added_message, name='user_added_message'),
     path('user_added_message', user_added_message, name='user_added_message'),

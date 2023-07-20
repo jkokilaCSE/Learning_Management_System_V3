@@ -3,6 +3,17 @@ from django.contrib.auth.models import User
 from base import models
 from base.models import Department
 
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+import os
+
+
+def validate_image_file(value):
+    ext = os.path.splitext(value.name)[1]  # Get the file extension
+    valid_extensions = ['.jpg', '.jpeg', '.png', '.gif']
+    if not ext.lower() in valid_extensions:
+        raise ValidationError(_('Only image files (JPG, JPEG, PNG, GIF) are allowed.'))
+
 
 class TeacherUserForm(forms.ModelForm):
     class Meta:
@@ -28,6 +39,8 @@ class TeacherForm(forms.ModelForm):
                                         label='Department')
     role = forms.ChoiceField(choices=ROLE_CHOICES, widget=forms.Select(attrs={'class': 'form-select'}), initial='admin', label='Role')
 
+    profile_pic = forms.ImageField(validators=[validate_image_file], label='Profile Picture')
+
     
 
 class TeacherFormhod(forms.ModelForm):
@@ -43,7 +56,7 @@ class TeacherFormhod(forms.ModelForm):
                                         to_field_name='short_name',
                                         label='Department')
     role = forms.ChoiceField(choices=ROLE_CHOICES, widget=forms.Select(attrs={'class': 'form-select'}), initial='admin', label='Role')
-
+    profile_pic = forms.ImageField(validators=[validate_image_file], label='Profile Picture')
 
 class TeacherForm1(forms.ModelForm):
     class Meta:
@@ -61,7 +74,7 @@ class TeacherForm1(forms.ModelForm):
     department = forms.ChoiceField(choices=DEPARTMENT_CHOICES,
                                     label='Department')
     role = forms.ChoiceField(choices=ROLE_CHOICES, widget=forms.Select(attrs={'class': 'form-select'}), initial='admin', label='Role')
-
+    profile_pic = forms.ImageField(validators=[validate_image_file], label='Profile Picture')
 
 
 class DepartmentForm(forms.ModelForm):
