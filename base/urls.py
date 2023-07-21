@@ -274,7 +274,7 @@ classroom = [
     path('class_ebook/<int:pk>/delete/',
          class_ebook_delete, name='class_ebook_delete'),
     path('filter_attendees', filter_attendees, name='filter_attendees'),
-    path('leave_classroom/<str:class_id>', leave_classroom, name='leave_classroom'),
+    path('leave_classroom/<str:class_id>/<int:owner>', leave_classroom, name='leave_classroom'),
 
 ]
 
@@ -445,6 +445,7 @@ blog_url = [
     path('delete_blog', delete_blog),
     path('edit_blog/save_edit_blog/<int:pk>', save_edit_blog,name="save_edit_blog"),
     path('edit_blog/draft_save_blog/<int:pk>', draft_save_blog),
+    path('list_cat_blog/<str:cat>', list_cat_blog,name="list_cat_blog"),
 ]
 
 gallery_ = [
@@ -542,6 +543,7 @@ NoCodeMaker = [
 chatbot = [
     path('chatbot_res', chatbot_res,name="chatbot_res"),
     path('student/chatbot_res', chatbot_res),
+    path('teacher/profile/chatbot_res', chatbot_res),
     path('teacher/chatbot_res', chatbot_res),
 ]
 

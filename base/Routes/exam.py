@@ -99,6 +99,7 @@ def admin_teacher_view(request):
 def admin_view_teacher_view(request):
     if Teacher.objects.get(user=request.user.id).role == 'admin':
         teachers = TMODEL.Teacher.objects.all().filter(status=True).exclude(role='admin')
+        
     elif Teacher.objects.get(user=request.user.id).role == 'hod':
         teachers = TMODEL.Teacher.objects.all().filter(status=True,role='staff')
     return render(request, 'exam/admin_view_teacher.html', staff_detials(request,'Staff Details',{'teachers': teachers}))
@@ -126,6 +127,7 @@ def update_teacher_view(request, pk):
         teacher.department = department
         teacher.Annauni_num = annauni_num
         user.set_password(new_password)
+        user.save()
 
         # Check if a new profile picture is selected
         if 'profile_pic' in request.FILES:
@@ -139,7 +141,7 @@ def update_teacher_view(request, pk):
     else:
         return render(request, 'exam/update_teacher.html', staff_detials(request,'Update User Details',{'teacher': teacher,'obj':obj}))
 
- 
+
 
 @login_required(login_url='adminlogin')
 def delete_teacher_view1(request, pk):

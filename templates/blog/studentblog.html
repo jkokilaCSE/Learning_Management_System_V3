@@ -74,45 +74,54 @@ justify-content: center;
 }
 
 /* Responsive Styles */
-@media (max-width: 640px) {
-  .button_container1 {
-    flex-wrap: wrap;
-    justify-content: center;
-    height: 500px;
-    display: flex;
-    align-items: center;
-    margin-top: -20px;
-    margin-bottom: 40%;
-    align-content: center;
+.button_container1 {
+        position: relative; /* Add relative positioning */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+        gap: 10px; /* Adjust the space between buttons */
+        margin-top: 3%; /* Update the top margin for better spacing */
+
+        /* Additional styles for smaller devices */
+        @media (max-width: 640px) {
+            top: unset; /* Remove the top positioning for smaller screens */
+            margin-top: 5%; /* Adjust the top margin for better spacing */
+            margin-bottom: 5%; /* Add some bottom margin to separate buttons from content */
+        }
+    }
+
+    .btn1 {
+        /* Existing styles... */
+        margin-bottom: 10px; /* Add some bottom margin to separate buttons vertically */
+    }
+  .p-6{ 
+    margin-top: 8%;
   }
 
-  .btn1 {
-    margin: 10px;
-  }
-  .p-6{ 
-    margin-top: 80%;
-  }
-}
 </style>
-<div class="button_container1">
-  <a href="{% url 'student_list_blog_course' %}">
-    <button class="btn1"><span>Courses</span></button>
-  </a>
-  <a href="{% url 'list_blog' %}">
-    <button class="btn1"><span>Blog</span></button>
-  </a>
-  <a href="{% url 'create_blog' %}">
-    <button class="btn1"><span>Create Blog</span></button>
-  </a>
-  
-  <a href="{% url 'st_list_draft_blog' %}">
-    <button class="btn1"><span>Drafted Articles</span></button>
-  </a>
-</div>
+
          <br>
 <div class="p-6">
+
+  <div class="button_container1">
+    <a href="{% url 'student_list_blog_course' %}">
+      <button class="btn1"><span>Courses</span></button>
+    </a>
+    <a href="{% url 'list_blog' %}">
+      <button class="btn1"><span>Blog</span></button>
+    </a>
+    <a href="{% url 'create_blog' %}">
+      <button class="btn1"><span>Create Blog</span></button>
+    </a>
+    
+    <a href="{% url 'st_list_draft_blog' %}">
+      <button class="btn1"><span>Drafted Articles</span></button>
+    </a>
+  </div>
+  <div><br><br>
     {% for i in blogs %}
-    <div style="    display: flex;align-items: center;justify-content: center; margin-top: 22%;">
+    <div style="    display: flex;align-items: center;justify-content: center; ">
         <h1 style="    font-weight: bold; font-size: 28px;">{{ i.0.categories }}</h1>
         <hr style="    margin-top: 10px; margin-bottom: 15px;">
     </div>
@@ -161,6 +170,7 @@ justify-content: center;
         {% endfor %}
     </div>
     {% endfor %}
+</div>
 </div>
 {% endblock content %}
 

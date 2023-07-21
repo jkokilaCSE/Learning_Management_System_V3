@@ -56,30 +56,43 @@
             {% csrf_token %}
             <label for="first_name">First Name:</label>
             <input type="text" required name="first_name" value="{{ student.user.first_name }}"><br>
+            
             <label for="last_name">Last Name:</label>
             <input type="text" required name="last_name" value="{{ student.user.last_name }}"><br>
+            
             <label for="email">Email:</label>
             <input type="email" required name="email" value="{{ student.mail_id }}"><br>
+            
             <label for="email">Parent Email: <span style="color: gray;"></span></label>
             <input type="email" required name="parent_mail_id" value="{{ student.parent_mail_id }}"><br>
-            <label for="email">Password: <span style="color: gray;">(The password is hidden from view, but it is changeable.)</span></label>
+            
+            <label for="password">Password: <span style="color: gray;">(The password is hidden from view, but it is changeable.)</span></label>
             <input type="text" required name="password" value="{{ student.user.password }}"><br>
+            
             <label for="address">Address:</label>
             <input type="text" required name="address" value="{{ student.address }}"><br>
+            
             <label for="mobile">Mobile:</label>
-            <input type="text" required name="mobile" value="{{ student.mobile }}"><br>
+            <!-- Use the pattern attribute to validate a 10-digit mobile number -->
+            <input type="tel" required name="mobile" value="{{ student.mobile }}" pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number"><br>
+            
             <label for="joinned_year">Joined Year:</label>
             <input type="date" required name="joinned_year" id="joinned_year"><br>
+            
             <label for="role_no">Role No: <span style="color: gray;">( readonly )</span></label>
             <input type="text" required name="role_no" value="{{ student.role_no }}" readonly><br>
+            
             <label for="file_">Profile photo: <span style="color: gray;"> ( Remember to select a profile picture. )</span></label>
-            <input type="file" required name="file_" accept="image/*"><br>
-            <label for="joinned_year">Department:<span style="color: gray;">( Remember to select a Department. )</span></label>
-            <select name="department">
+            <input type="file" name="file_" accept="image/*"><br>
+            
+            <label for="department">Department:<span style="color: gray;">( Remember to select a Department. )</span></label>
+            <select name="department" required>
+                <option value="" disabled selected>Select department</option>
                 {% for i in department %}
-                  <option value="{{ i.name }}" {% if i.name == student.department %}selected{% endif %}>{{ i.name }}</option>
+                    <option value="{{ i.name }}" {% if i.name == student.department %}selected{% endif %}>{{ i.name }}</option>
                 {% endfor %}
             </select>
+            
             <input type="submit" value="Save">
         </form>
         <script>

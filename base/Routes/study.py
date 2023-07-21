@@ -1,7 +1,7 @@
 import requests
 from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
-from ..models import Users,Department,Upload_Assignment,ClassRooms,  Assignment, Student, Faculty_details, Internal_test_mark, Course, Sec_Daily_test_mark, Room, ClassRooms, class_enrolled, NoteCourse, Attendees, Student, Teacher, EbookForClass, daily_test
+from ..models import Users,Department,Internal_test_mark,Sec_Daily_test_mark,Upload_Assignment,ClassRooms,Daily_test_mark, YouTubeLink,  Assignment, Student, Faculty_details, Internal_test_mark, Course, Sec_Daily_test_mark, Room, ClassRooms, class_enrolled, NoteCourse, Attendees, Student, Teacher, EbookForClass, daily_test
 from django.contrib.auth.models import User
 from .Tool.Tools import get_user_mail, get_user_name, get_user_role, get_user_obj, get_user_name_byid
 import datetime
@@ -44,9 +44,18 @@ def is_admin(user):
 def is_student(user):
     return user.groups.filter(name='STUDENT').exists()
 
-def leave_classroom(request,class_id):
-    a = class_enrolled.objects.get(user_id=request.user.id,class_id=class_id)
-    a.delete()
+def leave_classroom(request,class_id,owner):
+    if owner == 1:
+        Assignment.objects.filter(class_id=class_id).delete()
+        YouTubeLink.objects.filter(class_id=class_id).delete()
+        Daily_test_mark.objects.filter(class_id=class_id).delete()
+        Sec_Daily_test_mark.objects.filter(class_id=class_id).delete()
+        Internal_test_mark.objects.filter(class_id=class_id).delete()
+        ClassRooms.objects.get(subject_code=class_id).delete()
+    else:
+        a = class_enrolled.objects.get(user_id=request.user.id,class_id=class_id)
+        a.delete()
+        
     return render(request,"msg/leave_class.html")
 
 def nave_home_classroom(request, pk, class_id):
@@ -135,7 +144,12 @@ def nave_home_classroom(request, pk, class_id):
         #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         
         table_datas = Assignment.objects.filter(class_id=class_id)[::-1]
-        updated_by = [get_user_name_byid(i.update_by) for i in table_datas]
+        try:
+            updated_by = [get_user_name_byid(i.update_by) for i in table_datas]
+        except:
+            updated_by=[]
+            # updated_by = [get_user_name_byid(i.update_by) for i in table_datas]
+            
         collected = []
         status_data = []
         notes = []
@@ -1318,12 +1332,19 @@ def search_view(request):
     if request.method == 'GET':
         query = request.GET.get('google_search')
         if query:
-            query = urllib.parse.quote(query)
-            results = []
-            for url in search(query, num_results=50):
-                # process the search results
-                results.append(url)
-            return render(request, 'class_room/search_results.html', {'results': results, 'query': query})
+            try:
+                query = urllib.parse.quote(query)
+                results = []
+                for url in search(query, num_results=50):
+                    # process the search results
+                    results.append(url)
+                return render(request, 'class_room/search_results.html', {'results': results, 'query': query})
+            except:
+                try:
+                    Teacher.objects.get(user=User.objects.get(id=request.user.id))
+                    return render(request, 'msg/search_404.html',{'role':1})
+                except:
+                    return render(request, 'msg/search_404.html',{'role':0})
     return render(request, 'class_room/search_results.html',staff_detials(request,'Search Results',))
 
 

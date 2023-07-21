@@ -288,11 +288,11 @@ def add_admin(request):
             my_teacher_group = Group.objects.get_or_create(name='TEACHER')
             my_teacher_group[0].user_set.add(user)
         else:
-            return render(request,'msg/user_cant_create.html')
             print("not valied")
             print("Form data is not valid")
             print(userForm.errors)
             print(teacherForm.errors)
+            return render(request,'msg/user_cant_create.html')
         return HttpResponseRedirect('user_added_message')
     return render(request, 'teacher/addadmin.html',mydict)
 
@@ -411,7 +411,7 @@ def add_teacher_hod(request):
             return render(request,'msg/user_cant_create.html')
         return HttpResponseRedirect('user_added_message')
 
-    return render(request, 'teacher/adminsignup.html',staff_detials(request,'Add User',mydict))
+    return render(request, 'teacher/hodsignup.html',staff_detials(request,'Add User',mydict))
 
 def admin_added(request):
     return render(request,"attandees/admin_message.html")

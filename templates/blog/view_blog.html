@@ -361,7 +361,11 @@
                     <h4 class="widget-title mb-3">Categories</h4>
                     <ul class="unordered-list bullet-primary text-reset" id="categoryList">
                       {% for i in item %}
-                      <li><a href="{% url 'list_blog' %}">{{ i.0.categories }} ({{ i|length }})</a></li>
+                        {% if role == 0 %}
+                        <li><a href="{% url 'list_cat_blog' cat=i.0.categories %}">{{ i.0.categories }} ({{ i|length }})</a></li>
+                        {% else %}
+                        <li><a href="{% url 'list_cat_blog' cat=i.0.categories %}">{{ i.0.categories }} ({{ i|length }})</a></li>
+                        {% endif %}
                       {% endfor %}
                     </ul>
                   </div>

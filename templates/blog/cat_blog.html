@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Category Blog</title>
+    <style>
+        /* CSS styles go here */
+        body, h1, h2, h3, p, ul, li {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        .blog-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .blog-item {
+            width: calc(33.33% - 20px);
+            margin-bottom: 40px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .blog-item img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .blog-item h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .blog-item p {
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        .blog-item p:last-child {
+            margin-bottom: 0;
+        }
+
+        .blog-item:hover {
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        /* Search Form Styles */
+        .search-form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .search-form input[type="text"] {
+            padding: 5px;
+            width: 300px;
+        }
+
+        .search-form button {
+            padding: 5px 10px;
+            margin-left: 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .blog-item {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .blog-item {
+                width: 100%;
+            }
+        }
+
+
+.glow-on-hover {
+    width: 220px;
+    height: 50px;
+    border: none;
+    outline: none;
+    color: #fff;
+    background: #111;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+}
+.glow-on-hover a{
+    color: #fff;
+    list-style: none;
+}
+.glow-on-hover:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -2px;
+    left:-2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+}
+
+.glow-on-hover:active {
+    color: #000
+}
+
+.glow-on-hover:active:after {
+    background: transparent;
+}
+
+.glow-on-hover:hover:before {
+    opacity: 1;
+}
+
+.glow-on-hover:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Category Blog</h1>
+
+        <!-- Search Form -->
+        <div class="search-form">
+            <input type="text" id="searchQuery" placeholder="Search by title, userid, or categories" onchange="searchBlogs()">
+            <button onclick="searchBlogs()">Search</button>
+        </div>
+    </header>
+
+    <!-- Blog List Section -->
+    <section class="blog-list">
+        {% for blog in page %}
+        <div class="blog-item" data-category="{{ blog.categories }}">
+            <img src="{{ blog.blog_profile_img }}" alt="Blog Image">
+            <h2 id="title">{{ blog.title }}</h2>
+            <p id="userid">{{ blog.description }}</p>
+            <p id="categories">Category: {{ blog.categories }}</p>
+            <p>Author: {{ blog.userid }}</p>
+            <button class="glow-on-hover" type="button"><a href="{% url 'view_blog' pk=blog.id  %}">Explore</a></button>
+            <!-- Add other blog details as needed -->
+        </div>
+        {% endfor %}
+    </section>
+
+    <footer>
+        <p>© 2023 Your Blog Name. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function searchBlogs() { 
+            console.log("run")
+            var query = document.getElementById('searchQuery').value.toLowerCase();
+            var blogItems = document.getElementsByClassName('blog-item');
+
+            for (var i = 0; i < blogItems.length; i++) {
+                var title = document.getElementById('title').innerText.toLowerCase();
+                var userid = document.getElementById('userid').innerText.toLowerCase();
+                var categories = document.getElementById('categories').innerText.toLowerCase();
+
+                if (title.includes(query) || userid.includes(query) || categories.includes(query)) {
+                    blogItems[i].style.display = 'block';
+                } else {
+                    blogItems[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

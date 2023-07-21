@@ -20,26 +20,26 @@
     align-items: flex-start;
     align-content: center;">
       <h2 class="text-center text-2xl font-semibold mb-6">Update Teacher</h2>
-      <form class="space-y-4">
+      <form class="space-y-4" method="post" action="{% url 'update-teacher' pk=teacher.id %}">
         {% csrf_token %}
         <div class="mb-4">
           <label for="id_address" class="block mb-2">Address:</label>
           <input type="text" id="id_address" name="address" value="{{ teacher.address }}" required
             class="w-full sm:w-64 p-2 border border-gray-300 rounded-sm focus:ring focus:ring-indigo-300">
         </div>
-
+        
         <div class="mb-4">
           <label for="id_mobile" class="block mb-2">Mobile:</label>
-          <input type="text" id="id_mobile" name="mobile" value="{{ teacher.mobile }}" required
+          <input type="tel" id="id_mobile" name="mobile" value="{{ teacher.mobile }}" required
             class="w-full sm:w-64 p-2 border border-gray-300 rounded-sm focus:ring focus:ring-indigo-300">
         </div>
-
+        
         <div class="mb-4">
           <label for="new_password" class="block mb-2">Password:</label>
           <input type="text" id="new_password" name="new_password" value="{{ teacher.user.password }}" required
             class="w-full sm:w-64 p-2 border border-gray-300 rounded-sm focus:ring focus:ring-indigo-300">
         </div>
-
+        
         <div class="mb-4">
           <label for="id_role" class="block mb-2">Role:</label>
           <select id="id_role" name="role" required
@@ -49,7 +49,7 @@
             <option value="hod" {% if 'hod' in teacher.role %}selected{% endif %}>HOD</option>
           </select>
         </div>
-
+        
         <div class="mb-4">
           <label for="id_department" class="block mb-2">Department:</label>
           <select id="id_department" name="department"
@@ -63,18 +63,19 @@
             {% endfor %}
           </select>
         </div>
-
+        
         <div class="mb-4">
           <label for="id_Annauni_num" class="block mb-2">Annauni Num:</label>
           <input type="text" id="id_Annauni_num" name="Annauni_num" value="{{ teacher.Annauni_num }}" required
             class="w-full sm:w-64 p-2 border border-gray-300 rounded-sm focus:ring focus:ring-indigo-300">
         </div>
-
+        
         <div class="mb-4">
           <label for="id_profile_pic" class="block mb-2">Profile Picture:</label>
-          <input type="file" id="id_profile_pic" name="profile_pic" required
+          <input type="file" id="id_profile_pic" name="profile_pic" accept="image/*"
             class="w-full sm:w-64 p-2 border border-gray-300 rounded-sm focus:ring focus:ring-indigo-300">
         </div>
+        
 
         <div class="text-center">
           <button style="background-color: blue; border: none;" type="submit"

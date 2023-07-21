@@ -132,7 +132,7 @@ body {
                     <span>1</span>
                 </div> -->
                 <div class='custom-textarea'>
-                <textarea class='textarea' name="code" rows="10" cols="50" placeholder="Enter code here..." class="code-input p-2 border rounded-lg focus:outline-none" id="code-input"></textarea>
+                <textarea class='textarea' name="code" rows="10" cols="50" placeholder="Enter code here..." class="code-input p-2 border rounded-lg focus:outline-none" id="code-input">{{ code }}</textarea>
                 <div class='linenumbers'></div>
             </div>  
             </div>
@@ -168,19 +168,23 @@ body {
     </div>
     <script>
         const codeInput = document.getElementById('code-input');
-        const lineNumbers = document.querySelector('.line-numbers');
+    const lineNumbers = document.querySelector('.line-numbers');
+    codeInput.value = "{{ code }}"
+    codeInput.addEventListener('input', updateLineNumbers);
 
-        codeInput.addEventListener('input', updateLineNumbers);
+    function updateLineNumbers() {
+        const lines = codeInput.value.split('\n');
+        lineNumbers.innerHTML = '';
 
-        function updateLineNumbers() {
-            const lines = codeInput.value.split('\n');
-            lineNumbers.innerHTML = '';
-            for (let i = 0; i < lines.length; i++) {
-                const line = document.createElement('span');
-                line.textContent = i + 1;
-                lineNumbers.appendChild(line);
-            }
+        // Set the height of the lineNumbers element to fit the code
+        lineNumbers.style.height = `${lines.length * 1.5}rem`;
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = document.createElement('span');
+            line.textContent = i + 1;
+            lineNumbers.appendChild(line);
         }
+    }
         //stackcode
         class CustomTextarea {
     constructor(element) {
@@ -204,7 +208,7 @@ body {
         this.numberOfNumbers += 100;
         this.numbers.innerHTML += html;
     }
-
+    
     initEventListeners() {
         this.textarea.addEventListener('scroll', () => {
             this.numbers.style.transform = `translateY(-${ this.textarea.scrollTop }px)`;
@@ -217,6 +221,7 @@ body {
             }
         });
     }
+    
 };
 
 const textarea = new CustomTextarea(document.querySelector('.custom-textarea'));

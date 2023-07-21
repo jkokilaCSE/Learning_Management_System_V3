@@ -59,7 +59,7 @@ def staff_list_by_dep(request):
     usr_id = request.user.id
     usr_obj = User.objects.get(id=usr_id)
     faculty_details = Teacher.objects.get(user=usr_obj)
-    students = Teacher.objects.filter(department=faculty_details.department,role=faculty_details.role)
+    students = Teacher.objects.filter(department=faculty_details.department,role='staff')
     departments = set([student.department for student in students])
     context = {
         'students': students,
@@ -114,14 +114,19 @@ def student_profile(request, student_id):
         return render(request, 'student/student_profile.html', student_detials(request, 'Student Profile' ,dict_data))
 
 
+from django.contrib import messages
+
 def student_edit(request, pk):
     student = get_object_or_404(Student, pk=pk)
     user = User.objects.get(id=student.user.id)
     department = Department.objects.all()
     current_id = request.user.id
+
     if request.method == 'POST':
-        student.user.first_name = request.POST['first_name']
-        student.user.last_name = request.POST['last_name']
+        user.first_name = request.POST['first_name']
+        user.last_name = request.POST['last_name']
+        user.save()
+
         student.mail_id = request.POST['email']
         student.parent_mail_id = request.POST['parent_mail_id']
         student.address = request.POST['address']
@@ -129,17 +134,24 @@ def student_edit(request, pk):
         student.joinned_year = request.POST['joinned_year']
         student.role_no = request.POST['role_no']
         student.department = request.POST['department']
-        student.profile_pic = request.FILES['file_']
-        try:
-            if request.POST['password']:
-                user.set_password(request.POST['password'])
-                student.user.save()
-        except:
-            pass
+        
+        # Check if a new profile picture is provided
+        profile_pic = request.FILES.get('file_', None)
+        if profile_pic:
+            student.profile_pic = profile_pic
+
+        password = request.POST.get('password', None)
+        if password:
+            user.set_password(password)
+            user.save()
+            # Important: Update the session to keep the user logged in after password change
+
         student.save()
-        return render(request, 'msg/profile_updated.html', {'pk':pk})
+
+        messages.success(request, 'Profile updated successfully!')
+        return render(request, 'msg/profile_updated.html', {'pk': pk})
     else:
-        context = {'student': student,'department':department}
+        context = {'student': student, 'department': department}
         try:
             Teacher.objects.get(user=User.objects.get(id=request.user.id))
             return render(request, 'student/eddit_staff_handle.html', staff_detials(request, 'Edit Detials', context))
@@ -217,7 +229,10 @@ def add_student_signup_view(request):
             add_user.save()
             my_student_group = Group.objects.get_or_create(name='STUDENT')
             my_student_group[0].user_set.add(user)
-        return HttpResponseRedirect('addstudentlogin')
+            return HttpResponseRedirect('addstudentlogin')
+        else:
+            # If the form data is not valid, render the form with the errors
+            return render(request, 'msg/std_error.html', staff_detials(request, 'Add Student', {'userForm': userForm, 'studentForm': studentForm}))
     return render(request, 'student/studentsignup.html', staff_detials(request,'Add Student',mydict))
 
 

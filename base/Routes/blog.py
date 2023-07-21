@@ -1,4 +1,5 @@
-from base.models import blog, Draft_blog
+from base.models import blog, Draft_blog, Teacher
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .Tool.blogTool import get_blog, get_course, get_blog_by_cat,get_blog_by_cat1, get_draft_blog, get_course_review, get_draft_blog_by_cat, get_draft_blog_unreview
@@ -203,8 +204,15 @@ def view_blog(request, pk):
     page = blog.objects.get(id=pk)
     items = get_blog_by_cat1().remove(page) if page in get_blog_by_cat1() else get_blog_by_cat1()
     print(items)
-    return render(request, "blog/view_blog.html", {'blog': page, 'item': items})
-
+    try:
+        Teacher.objects.get(user=User.objects.get(id=request.user.id))
+        return render(request, "blog/view_blog.html", {'blog': page, 'item': items, 'role':1})
+    except:
+        return render(request, "blog/view_blog.html", {'blog': page, 'item': items,'role':0})
+        
+def list_cat_blog(request,cat):
+    page = blog.objects.filter(categories=cat)
+    return render(request,'blog/cat_blog.html',{'page':page})
 
 def draft_view_blog(request, pk):
     page = Draft_blog.objects.get(id=pk)

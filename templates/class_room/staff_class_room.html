@@ -2217,9 +2217,13 @@ JEC-Class room  </title>
         <div class="collapse navbar-collapse me-md-0 me-sm-4 mt-sm-0 mt-2" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
             <div class="input-group">
-              <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" placeholder="Google Search...">
-            </div>
+              <form class="input-group" method="GET" action="{% url 'search_view' %}">
+                <button class="input-group-text text-body" type="submit"><i class="fas fa-search"
+                  aria-hidden="true"></i></button>
+              <input type="text" class="form-control" id="google_search" name="google_search"
+                placeholder="Google Search...">
+              </form>
+              </div>
           </div>
           <ul class="navbar-nav justify-content-end">
             <li class="nav-item d-flex align-items-center">
@@ -2417,17 +2421,17 @@ JEC-Class room  </title>
                   </a>
                 </li>
                 <li class="nav-item">
-                  {% if role != 'admin' %}
+                  {% if stusr.user_name == detail.owner.user_name %}
                   <a style="display: flex;" class="nav-link mb-0 px-0 py-1 "
-                    href="{% url 'attendes_option' class_id=detail.subject_code %}" role="tab" aria-selected="false">
+                    href="{% url 'leave_classroom' class_id=detail.subject_code owner=1 %}" role="tab" aria-selected="false">
                   {% else %}
                   <a style="display: flex;" class="nav-link mb-0 px-0 py-1 "
-                    href="{% url 'attendes_option1' class_id=detail.subject_code %}" role="tab" aria-selected="false">
+                    href="{% url 'leave_classroom1' class_id=detail.subject_code owner=0 %}" role="tab" aria-selected="false">
                   {% endif %}
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><g fill="#344767" fill-rule="evenodd" clip-rule="evenodd"><path d="M15.027 7.232a1 1 0 0 1 1.408.128l2.083 2.5a1 1 0 0 1-1.536 1.28l-2.083-2.5a1 1 0 0 1 .128-1.408Z"/><path d="M15.027 13.768a1 1 0 0 1-.129-1.408l2.084-2.5a1 1 0 1 1 1.536 1.28l-2.083 2.5a1 1 0 0 1-1.408.128Z"/><path d="M17.5 10.5a1 1 0 0 1-1 1H10a1 1 0 1 1 0-2h6.5a1 1 0 0 1 1 1ZM3 3.5a1 1 0 0 1 1-1h9a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1Zm0 14a1 1 0 0 1 1-1h9a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1Z"/><path d="M13 2.5a1 1 0 0 1 1 1v4a1 1 0 1 1-2 0v-4a1 1 0 0 1 1-1Zm0 10a1 1 0 0 1 1 1v4a1 1 0 1 1-2 0v-4a1 1 0 0 1 1-1Zm-9-10a1 1 0 0 1 1 1v14a1 1 0 1 1-2 0v-14a1 1 0 0 1 1-1Z"/></g></svg>
                     <span class="ms-1">Leave Class</span>
                   </a>
-                </li>
+                </li> 
                 <li class="nav-item">
                   {% if role != 'admin' %}
                   <a style="display: flex;" class="nav-link mb-0 px-0 py-1 "

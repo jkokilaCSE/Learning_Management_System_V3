@@ -3,115 +3,126 @@
 {% block content %}
 <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 <style>
-    @import url('https://fonts.googleapis.com/css?family=Amatic+SC');
+  @import url('https://fonts.googleapis.com/css?family=Amatic+SC');
 
 body {
-  margin: 0;
-}
+margin: 0;
+} 
 
 .button_container1 {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 65%;
-  display: flex;
-  height: fit-content;
-  margin-top: 10%;
+position: absolute;
+left: 0;
+right: 0;
+top: 65%;
+display: flex;
+height: fit-content;
+margin-top: 10%;
+justify-content: center;
 }
 
 .btn1 {
-  border: none;
-  display: block;
-  text-align: center;
-  cursor: pointer;
-  text-transform: uppercase;
-  outline: none;
-  overflow: hidden;
-  position: relative;
-  color: #fff;
-  font-weight: 700;
-  font-size: 15px;
-  background-color: #222;
-  padding: 10px 40px;
-  margin: 0 auto;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.20);
-  margin-left: 20px;
+border: none;
+display: block;
+text-align: center;
+cursor: pointer;
+text-transform: uppercase;
+outline: none;
+overflow: hidden;
+position: relative;
+color: #fff;
+font-weight: 700;
+font-size: 15px;
+background-color: #222;
+padding: 10px 40px;
+margin: 0 auto;
+box-shadow: 0 5px 15px rgba(0,0,0,0.20);
+margin-left: 20px;
 }
 
 .btn1 span {
-  position: relative;
-  z-index: 1;
+position: relative;
+z-index: 1;
 }
 
 .btn1:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 490%;
-  width: 140%;
-  background: #78c7d2;
-  transition: all .5s ease-in-out;
-  transform: translateX(-98%) translateY(-25%) rotate(45deg);
+content: "";
+position: absolute;
+left: 0;
+top: 0;
+height: 490%;
+width: 140%;
+background: #78c7d2;
+transition: all .5s ease-in-out;
+transform: translateX(-98%) translateY(-25%) rotate(45deg);
 }
 
 .btn1:hover:after {
-  transform: translateX(-9%) translateY(-25%) rotate(45deg);
+transform: translateX(-9%) translateY(-25%) rotate(45deg);
 }
 
 .link {
-  font-size: 20px;
-  margin-top: 30px;
+font-size: 20px;
+margin-top: 30px;
 }
 
 .link a {
-  color: #000;
-  font-size: 25px; 
+color: #000;
+font-size: 25px; 
 }
 .p-6{
-    margin-top: 10%;
+  margin-top: 10%;
 }
 
 /* Responsive Styles */
-@media (max-width: 640px) {
-  .button_container1 {
-    flex-wrap: wrap;
-    justify-content: center;
-    height: 500px;
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 40%;
-    align-content: center;
+.button_container1 {
+      position: relative; /* Add relative positioning */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+      gap: 10px; /* Adjust the space between buttons */
+      margin-top: 3%; /* Update the top margin for better spacing */
+
+      /* Additional styles for smaller devices */
+      @media (max-width: 640px) {
+          top: unset; /* Remove the top positioning for smaller screens */
+          margin-top: 5%; /* Adjust the top margin for better spacing */
+          margin-bottom: 5%; /* Add some bottom margin to separate buttons from content */
+      }
   }
 
   .btn1 {
-    margin: 10px;
+      /* Existing styles... */
+      margin-bottom: 10px; /* Add some bottom margin to separate buttons vertically */
   }
-  .p-6{
-    margin-top: 80%;
-  }
+.p-6{ 
+  margin-top: 8%;
 }
+
 </style>
-<div class="button_container1">
-  <a href="{% url 'staff_list_blog_course' %}">
-    <button class="btn1"><span>Courses</span></button>
-  </a>
-  <a href="{% url 'staff_list_blog' %}">
-    <button class="btn1"><span>Blog</span></button>
-  </a>
-  <a href="{% url 'staff_create_blog' %}">
-    <button class="btn1"><span>Create Blog</span></button>
-  </a>
-  <a href="{% url 'list_edit_blog' %}">
-    <button class="btn1"><span>Manage Blog</span></button>
-  </a>
-  <a href="{% url 'list_draft_blog' %}">
-    <button class="btn1"><span>Drafted Articles</span></button>
-  </a>
-</div>
-         <br>   
+
+       <br>
 <div class="p-6">
+
+  <div class="button_container1">
+    <a href="{% url 'staff_list_blog_course' %}">
+      <button class="btn1"><span>Courses</span></button>
+    </a>
+    <a href="{% url 'staff_list_blog' %}">
+      <button class="btn1"><span>Blog</span></button>
+    </a>
+    <a href="{% url 'staff_create_blog' %}">
+      <button class="btn1"><span>Create Blog</span></button>
+    </a>
+    <a href="{% url 'list_edit_blog' %}">
+      <button class="btn1"><span>Manage Blog</span></button>
+    </a>
+    <a href="{% url 'list_draft_blog' %}">
+      <button class="btn1"><span>Drafted Articles</span></button>
+    </a>
+  </div>
+<div><br><br>
+  
   {% for i in blogs %}
   <div style="display: flex; align-items: center; justify-content: center;">
     <h1 style="font-weight: bold; font-size: 28px;">{{ i.0.categories }}</h1>
